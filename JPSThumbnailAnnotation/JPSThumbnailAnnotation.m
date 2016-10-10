@@ -10,7 +10,7 @@
 
 @interface JPSThumbnailAnnotation ()
 
-@property (nonatomic, readwrite) JPSThumbnailAnnotationView *view;
+@property (nonatomic, readwrite) MKAnnotationView <JPSThumbnailAnnotationViewProtocol> *view;
 @property (nonatomic, readonly) JPSThumbnail *thumbnail;
 
 @end
@@ -30,10 +30,16 @@
     return self;
 }
 
+- (NSString *)thumbnailAnnotationViewClass {
+    return @"JPSThumbnailAnnotationView";
+}
+
 - (MKAnnotationView *)annotationViewInMap:(MKMapView *)mapView {
     if (!self.view) {
-        self.view = (JPSThumbnailAnnotationView *)[mapView dequeueReusableAnnotationViewWithIdentifier:kJPSThumbnailAnnotationViewReuseID];
-        if (!self.view) self.view = [[JPSThumbnailAnnotationView alloc] initWithAnnotation:self];
+        self.view = [mapView dequeueReusableAnnotationViewWithIdentifier:kJPSThumbnailAnnotationViewReuseID];
+        
+        Class viewClass = NSClassFromString([self thumbnailAnnotationViewClass]);
+        if (!self.view) self.view = [[viewClass alloc] initWithAnnotation:self];
     } else {
         self.view.annotation = self;
     }
@@ -54,3 +60,4 @@
 }
 
 @end
+

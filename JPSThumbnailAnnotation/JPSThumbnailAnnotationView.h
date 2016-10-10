@@ -28,13 +28,13 @@ typedef NS_ENUM(NSInteger, JPSThumbnailAnnotationViewState) {
 - (void)didSelectAnnotationViewInMap:(MKMapView *)mapView;
 - (void)didDeselectAnnotationViewInMap:(MKMapView *)mapView;
 
+- (void)updateWithThumbnail:(JPSThumbnail *)thumbnail;
+
 @end
 
 @interface JPSThumbnailAnnotationView : MKAnnotationView <JPSThumbnailAnnotationViewProtocol>
 
 - (id)initWithAnnotation:(id<MKAnnotation>)annotation;
-
-- (void)updateWithThumbnail:(JPSThumbnail *)thumbnail;
 
 // Programmatically expand the annotation
 - (void)expand;

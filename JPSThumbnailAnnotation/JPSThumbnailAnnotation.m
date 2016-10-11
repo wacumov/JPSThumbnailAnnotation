@@ -8,11 +8,13 @@
 
 #import "JPSThumbnailAnnotation.h"
 
+static NSString * const kDefaultViewClassName = @"JPSThumbnailAnnotationView";
+
 @interface JPSThumbnailAnnotation ()
 
 @property (nonatomic, readwrite) MKAnnotationView <JPSThumbnailAnnotationViewProtocol> *view;
 @property (nonatomic, readonly) JPSThumbnail *thumbnail;
-
+@property (nonatomic, copy) NSString *viewClassName;
 @end
 
 @implementation JPSThumbnailAnnotation
@@ -27,18 +29,25 @@
         _coordinate = thumbnail.coordinate;
         _thumbnail = thumbnail;
     }
+    return [self initWithThumbnail:thumbnail
+                     viewClassName:kDefaultViewClassName];
+}
+
+- (id)initWithThumbnail:(JPSThumbnail *)thumbnail
+          viewClassName:(NSString *)viewClassName {
+    self = [super init];
+    if (self) {
+        _coordinate = thumbnail.coordinate;
+        _thumbnail = thumbnail;
+        _viewClassName = viewClassName;
+    }
     return self;
 }
-
-- (NSString *)thumbnailAnnotationViewClass {
-    return @"JPSThumbnailAnnotationView";
-}
-
 - (MKAnnotationView *)annotationViewInMap:(MKMapView *)mapView {
     if (!self.view) {
         self.view = [mapView dequeueReusableAnnotationViewWithIdentifier:kJPSThumbnailAnnotationViewReuseID];
         
-        Class viewClass = NSClassFromString([self thumbnailAnnotationViewClass]);
+        Class viewClass = NSClassFromString(self.viewClassName);
         if (!self.view) self.view = [[viewClass alloc] initWithAnnotation:self];
     } else {
         self.view.annotation = self;
@@ -60,4 +69,6 @@
 }
 
 @end
+
+
 

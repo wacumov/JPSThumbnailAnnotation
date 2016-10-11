@@ -25,4 +25,7 @@
 - (id)initWithThumbnail:(JPSThumbnail *)thumbnail;
 - (void)updateThumbnail:(JPSThumbnail *)thumbnail animated:(BOOL)animated;
 
+- (id)initWithThumbnail:(JPSThumbnail *)thumbnail
+          viewClassName:(NSString *)viewClassName;
+
 @end
